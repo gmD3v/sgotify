@@ -1,3 +1,9 @@
 {
-  "conventionalCommits.scopes": ["dependencies", "vscode", "cmd", "git"]
+  "conventionalCommits.scopes": [
+    "dependencies",
+    "vscode",
+    "cmd",
+    "git",
+    "domain"
+  ]
 }

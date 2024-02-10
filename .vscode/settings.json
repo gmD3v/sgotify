@@ -4,6 +4,12 @@
     "vscode",
     "cmd",
     "git",
-    "domain"
+    "domain",
+    "port-repo",
+    "port-service",
+    "services",
+    "repositories",
+    "handlers",
+    "utils"
   ]
 }

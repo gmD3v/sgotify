@@ -40,8 +40,8 @@ func (h *AuthHandler) Login(cmd *cobra.Command, args []string) {
 	log.Println("Logged in successfully")
 }
 
-func (h *AuthHandler) Refresh(accessToken, refresh string) error {
-	return h.authService.Refresh(accessToken, refresh)
+func (h *AuthHandler) Refresh(refresh string) error {
+	return h.authService.Refresh(refresh)
 }
 
 func (h *AuthHandler) Logout() error {

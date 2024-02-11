@@ -23,8 +23,8 @@ func (s *service) Login(code string) error {
 	return nil
 }
 
-func (s *service) Refresh(accessToken, refresh string) error {
-	accessTk, refreTk, err := s.repo.RefreshToken(accessToken, refresh)
+func (s *service) Refresh(refresh string) error {
+	accessTk, refreTk, err := s.repo.RefreshToken(refresh)
 	if err != nil {
 		return err
 	}

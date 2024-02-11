@@ -1,6 +1,8 @@
 package controlhandler
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	ports "gmd3v.com/sgotify/internal/core/ports/services"
 )
@@ -21,34 +23,39 @@ func (h *ControlHandler) PlaySong(cmd *cobra.Command, args []string) {
 		err = h.ctrlService.PlaySong("")
 	}
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
+	fmt.Println("Playing song")
 }
 
 func (h *ControlHandler) PauseSong(cmd *cobra.Command, args []string) {
 	err := h.ctrlService.PauseSong()
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
+	fmt.Println("Pausing song")
 }
 
 func (h *ControlHandler) NextSong(cmd *cobra.Command, args []string) {
 	err := h.ctrlService.NextSong()
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
+	fmt.Println("Next song")
 }
 
 func (h *ControlHandler) PreviousSong(cmd *cobra.Command, args []string) {
 	err := h.ctrlService.PreviousSong()
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
+	fmt.Println("Previous song")
 }
 
 func (h *ControlHandler) GetSong(cmd *cobra.Command, args []string) {
 	_, err := h.ctrlService.GetSong()
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
+	fmt.Println("Getting song")
 }

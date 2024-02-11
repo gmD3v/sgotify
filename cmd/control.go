@@ -4,11 +4,11 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"gmd3v.com/sgotify/internal/core/services/control"
+	"gmd3v.com/sgotify/internal/handlers"
 	controlhandler "gmd3v.com/sgotify/internal/handlers/control_handler"
+	"gmd3v.com/sgotify/internal/repositories/authrepo"
 	"gmd3v.com/sgotify/internal/repositories/controlrepo"
 	"gmd3v.com/sgotify/internal/repositories/tokenrepo"
 )
@@ -16,38 +16,27 @@ import (
 func init() {
 	tokenRepo := tokenrepo.NewTokenRepository()
 	controlRepo := controlrepo.NewWrpControl()
+	authRepo := authrepo.NewWRPAuth()
 	controlSrv := control.NewService(controlRepo, tokenRepo)
 	handler := controlhandler.NewHandler(controlSrv)
+	// handler :=
+	handlerController := handlers.NewHandler(tokenRepo, authRepo, map[string]handlers.CobraFunc{
+		"play":     handler.PlaySong,
+		"pause":    handler.PauseSong,
+		"next":     handler.NextSong,
+		"previous": handler.PreviousSong,
+	})
 	rootCmd.AddCommand(&cobra.Command{
 		Use:   "control",
-		Short: "A brief description of your command",
-		Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+		Short: "Control your music player from the command line.",
+		Long: `Control your music player from the command line. For example:
+		- sgotify control play
+		- sgotify control pause
+		- sgotify control next
+		- sgotify control previous
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			// get command type from command and call the appropriate function
-			if len(args) == 0 {
-				fmt.Println("Please provide a command")
-				return
-			}
-			command := args[0]
-			if command == "play" {
-				handler.PlaySong(cmd, args)
-			}
-			if command == "pause" {
-				handler.PauseSong(cmd, args)
-			}
-			if command == "next" {
-				handler.NextSong(cmd, args)
-			}
-			if command == "previous" {
-				handler.PreviousSong(cmd, args)
-			}
-
-		},
+	Remember to authenticate first using the auth command.`,
+		Run: handlerController.ControllerProtected,
 	})
 
 }

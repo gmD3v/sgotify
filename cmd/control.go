@@ -20,23 +20,24 @@ func init() {
 	controlSrv := control.NewService(controlRepo, tokenRepo)
 	handler := controlhandler.NewHandler(controlSrv)
 	// handler :=
-	handlerController := handlers.NewHandler(tokenRepo, authRepo, map[string]handlers.CobraFunc{
-		"play":     handler.PlaySong,
-		"pause":    handler.PauseSong,
-		"next":     handler.NextSong,
-		"previous": handler.PreviousSong,
-	})
-	rootCmd.AddCommand(&cobra.Command{
+	handlerController := handlers.NewHandler(tokenRepo, authRepo, handler.ControllerMain)
+	var controlCmd = &cobra.Command{
 		Use:   "control",
 		Short: "Control your music player from the command line.",
 		Long: `Control your music player from the command line. For example:
-		- sgotify control play
-		- sgotify control pause
-		- sgotify control next
-		- sgotify control previous
+		- sgotify control --device <device_id> play
 
-	Remember to authenticate first using the auth command.`,
+		Opciones:
+		- play: Reproduce la canción actual.
+		- pause: Pausa la canción actual.
+		- next: Reproduce la siguiente canción.
+		- previous: Reproduce la canción anterior.
+		- get: Muestra la canción actual.`,
 		Run: handlerController.ControllerProtected,
-	})
+	}
+	controlCmd.PersistentFlags().StringP("device", "d", "", "Device ID")
+	controlCmd.PersistentFlags().StringP("song", "s", "", "Song ID")
+	controlCmd.PersistentFlags().StringP("playlist", "p", "", "Playlist ID")
+	rootCmd.AddCommand(controlCmd)
 
 }

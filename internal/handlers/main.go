@@ -13,10 +13,10 @@ type Handler struct {
 }
 type CobraFunc func(cmd *cobra.Command, args []string)
 
-var controllers = map[string]CobraFunc{}
+var _controller CobraFunc
 
-func NewHandler(tokenRepo repositories.TokenRepository, authRepo repositories.AuthRepository, controller map[string]CobraFunc) *Handler {
-	controllers = controller
+func NewHandler(tokenRepo repositories.TokenRepository, authRepo repositories.AuthRepository, controller CobraFunc) *Handler {
+	_controller = controller
 	return &Handler{
 		tokenRepo: tokenRepo,
 		authRepo:  authRepo,
@@ -43,12 +43,7 @@ func (h *Handler) ControllerProtected(cmd *cobra.Command, args []string) {
 			panic(err)
 		}
 	}
-	if f, ok := controllers[args[0]]; ok {
-		f(cmd, args[1:])
-	} else {
-		cmd.Help()
-	}
-
+	_controller(cmd, args)
 	if r := recover(); r != nil {
 		fmt.Print("Debe estar autenticado para realizar esta acción. Por favor, autentíquese usando el comando auth.")
 	}

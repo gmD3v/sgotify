@@ -7,5 +7,5 @@ type ControlService interface {
 	PauseSong() error
 	NextSong() error
 	PreviousSong() error
-	GetSong() (domain.Song, error)
+	GetSong() (*domain.Song, error)
 }

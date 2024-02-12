@@ -47,15 +47,15 @@ func (s *ControlService) PreviousSong() error {
 	return s.repo.PreviousSong(token)
 }
 
-func (s *ControlService) GetSong() (domain.Song, error) {
+func (s *ControlService) GetSong() (*domain.Song, error) {
 	token, _, err := s.tokenRepo.GetSavedToken()
 	if err != nil {
-		return domain.Song{}, err
+		return nil, err
 
 	}
-	_, err = s.repo.GetSong(token)
+	song, err := s.repo.GetSong(token)
 	if err != nil {
-		return domain.Song{}, err
+		return nil, err
 	}
-	return domain.Song{}, nil
+	return song, nil
 }

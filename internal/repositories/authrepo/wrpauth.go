@@ -25,7 +25,6 @@ type WRPAuth struct {
 // GetToken is a function that returns a token and a refresh token
 func (w *WRPAuth) GetToken(code string) (string, string, error) {
 	context := context.Background()
-	println("Code", code)
 	tok, err := utils.GetAuthenticator().Exchange(context, code)
 	if err != nil {
 		return "", "", err
